@@ -6,13 +6,18 @@
 /*   By: zallioua <zallioua@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/23 11:40:33 by zallioua          #+#    #+#             */
-/*   Updated: 2026/11/02 09:57:09 by zallioua         ###   ########.fr       */
+/*   Updated: 2026/11/02 22:35:53 by zallioua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <stdarg.h>
+#include <unistd.h>
 
+int ft_print_char(int c)
+{
+	return(write(1,&c,1));
+}
 
 int ft_sum(int count,...)
 {
@@ -28,7 +33,3 @@ int ft_sum(int count,...)
 	return t;
 }
 
-int	main(void)
-{
-	printf("%d",ft_sum(1,1,2,3,4));
-}
