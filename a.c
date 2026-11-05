@@ -6,7 +6,7 @@
 /*   By: zallioua <zallioua@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/04 11:04:40 by zallioua          #+#    #+#             */
-/*   Updated: 2026/11/05 12:23:59 by zallioua         ###   ########.fr       */
+/*   Updated: 2026/11/05 12:33:20 by zallioua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,21 +68,38 @@ int	ft_print_nbr(int n)
 	return (count + 1);
 }
 
-int	ft_print_hex(unsigned int i, char *s)
+int	ft_print_hex(unsigned long i, char *s)
 {
-	int		count;
+	int	count;
 
 	count = 0;
-	if(i >= 16)
+	if (i >= 16)
 	{
-		count = ft_print_hex(i / 16 ,s);
-		if(count < 0)
-			return -1 ;
+		count = ft_print_hex(i / 16, s);
+		if (count < 0)
+			return (-1);
 	}
-	if( write(1,&(s[i % 16]),1) == -1)
-		return -1;
+	if (write(1, &(s[i % 16]), 1) == -1)
+		return (-1);
 	return (count + 1);
 }
+
+int	ft_print_point(void *ptr)
+{
+	int	count;
+
+	count = 0;
+	if (!ptr)
+		return (write(1, "(nil)", 5));
+	if (write(1, "0x", 2) == -1)
+		return (-1);
+	count = ft_print_hex((unsigned long)ptr, "0123456789abcdef");
+	if (count == -1)
+		return (-1);
+	return (count + 2);
+}
+
+
 
 int	formate(char *s, va_list ap)
 {
@@ -99,6 +116,8 @@ int	formate(char *s, va_list ap)
 		count += ft_print_hex(va_arg(ap, unsigned int), "0123456789abcdef");
 	else if (*s == 'X')
 		count += ft_print_hex(va_arg(ap, unsigned int), "0123456789ABCDEF");
+	else if (*s == 'p')
+		count += ft_print_point(va_arg(ap, void *));
 	else if (*s == '%')
 		count += ft_print_char('%');
 	return (count);
@@ -132,11 +151,13 @@ int	main(void)
 	int r1;
 	int r2;
 
+	int a = 42;
+	int b = 1337;
 	// close(1);
 	// setvbuf(stdout, NULL, _IONBF, 0);
 
-	r1 = ft_prr("hello %X\n", 42);
-	r2 = printf("hello %X\n", 42);
+	r1 = ft_prr("hello %p\n", &a);
+	r2 = printf("hello %p\n", &b);
 	fprintf(stderr, "ft_printf: %d\nprintf:    %d\n", r1, r2);
 	return (0);
 }
