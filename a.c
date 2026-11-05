@@ -6,7 +6,7 @@
 /*   By: zallioua <zallioua@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/04 11:04:40 by zallioua          #+#    #+#             */
-/*   Updated: 2026/11/05 12:48:15 by zallioua         ###   ########.fr       */
+/*   Updated: 2026/11/05 21:28:49 by zallioua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,19 +147,24 @@ int	ft_prr(char *s, ...)
 {
 	va_list	ap;
 	int		count;
+	int		ret;
 	int		i;
 
 	i = 0;
+	if (!s)
+		return (-1);
 	va_start(ap, s);
 	count = 0;
-	while (s[i])
+	while (count != -1 && s[i])
 	{
 		if (s[i] == '%')
-			count += formate(&(s[++i]), ap);
-		else if (count < 0)
-			return (count);
+			ret = formate(&(s[++i]), ap);
 		else
-			count += ft_print_char(s[i]);
+			ret = ft_print_char(s[i]);
+		if (ret == -1)
+			return (-1);
+		else
+			count += ret;
 		i++;
 	}
 	va_end(ap);
@@ -172,11 +177,11 @@ int	main(void)
 	int r2;
 
 	int a = 42;
-	// close(1);
-	// setvbuf(stdout, NULL, _IONBF, 0);
+	close(1);
+	setvbuf(stdout, NULL, _IONBF, 0);
 
-	r1 = ft_prr("hello %u\n", -42);
-	r2 = printf("hello %u\n", -42);
+	r1 = ft_prr("hello %u\n", 042);
+	r2 = printf("hello %u\n", 042);
 	fprintf(stderr, "ft_printf: %d\nprintf:    %d\n", r1, r2);
 	return (0);
 }
