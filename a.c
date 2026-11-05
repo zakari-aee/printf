@@ -6,7 +6,7 @@
 /*   By: zallioua <zallioua@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/04 11:04:40 by zallioua          #+#    #+#             */
-/*   Updated: 2026/11/05 12:33:20 by zallioua         ###   ########.fr       */
+/*   Updated: 2026/11/05 12:48:15 by zallioua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	ft_print_hex(unsigned long i, char *s)
 	if (i >= 16)
 	{
 		count = ft_print_hex(i / 16, s);
-		if (count < 0)
+		if (count == -1)
 			return (-1);
 	}
 	if (write(1, &(s[i % 16]), 1) == -1)
@@ -99,7 +99,26 @@ int	ft_print_point(void *ptr)
 	return (count + 2);
 }
 
+int	ft_print_unbr(unsigned int nbr)
+{
+	int		count;
+	char	c;
 
+	count = 0;
+	if (nbr < 0)
+		nbr *= -1;
+		
+	if (nbr >= 10)
+	{
+		count = ft_print_unbr(nbr / 10);
+		if (count == -1)
+			return (-1);
+	}
+	c = (nbr % 10) + '0';
+	if (write(1, &c, 1) == -1)
+		return (-1);
+	return (count + 1);
+}
 
 int	formate(char *s, va_list ap)
 {
@@ -110,8 +129,10 @@ int	formate(char *s, va_list ap)
 		count += ft_print_char(va_arg(ap, int));
 	else if (*s == 's')
 		count += ft_print_str(va_arg(ap, char *));
-	else if (*s == 'd')
+	else if (*s == 'd' || *s == 'i')
 		count += ft_print_nbr(va_arg(ap, int));
+	else if (*s == 'u')
+		count += ft_print_unbr(va_arg(ap, unsigned int));
 	else if (*s == 'x')
 		count += ft_print_hex(va_arg(ap, unsigned int), "0123456789abcdef");
 	else if (*s == 'X')
@@ -152,12 +173,11 @@ int	main(void)
 	int r2;
 
 	int a = 42;
-	int b = 1337;
 	// close(1);
 	// setvbuf(stdout, NULL, _IONBF, 0);
 
-	r1 = ft_prr("hello %p\n", &a);
-	r2 = printf("hello %p\n", &b);
+	r1 = ft_prr("hello %u\n", -42);
+	r2 = printf("hello %u\n", -42);
 	fprintf(stderr, "ft_printf: %d\nprintf:    %d\n", r1, r2);
 	return (0);
 }
