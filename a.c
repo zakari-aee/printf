@@ -6,7 +6,7 @@
 /*   By: zallioua <zallioua@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/04 11:04:40 by zallioua          #+#    #+#             */
-/*   Updated: 2026/11/05 11:34:43 by zallioua         ###   ########.fr       */
+/*   Updated: 2026/11/05 12:23:59 by zallioua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,29 @@
 #include <stdio.h>
 #include <unistd.h>
 
-static int ft_strlen(char *s)
+static int	ft_strlen(char *s)
 {
-	if(*s == '\0')
-		return 0;
-	return (1 + ft_strlen(s+1));
+	if (*s == '\0')
+		return (0);
+	return (1 + ft_strlen(s + 1));
 }
 
-int ft_print_char(int c)
+int	ft_print_char(int c)
 {
-	if(write(1,&c,1) == -1)
-		return -1;
-	return(write(1,&c,1));
+	if (write(1, &c, 1) == -1)
+		return (-1);
 }
 
-int ft_print_str(char *str)
+int	ft_print_str(char *str)
 {
-	int c;
+	int	c;
+
 	if (!str)
-        str = "(null)";
-
+		str = "(null)";
 	c = ft_strlen(str);
-	write(1,str,c);
-	return c;
-
+	if (write(1, str, c) == -1)
+		return (-1);
+	return (c);
 }
 
 int	ft_print_nbr(int n)
@@ -69,36 +68,75 @@ int	ft_print_nbr(int n)
 	return (count + 1);
 }
 
-int	ft_prr(char *s, ...) // ... elepses
+int	ft_print_hex(unsigned int i, char *s)
 {
-	va_list ap;
-	va_start(ap,s);
-	int count;
+	int		count;
+
 	count = 0;
-	while (*s)
-    {
-        if (*s == '%')
-        {
-            s++;
-            if (*s == 'c')
-                count += ft_print_chr(va_arg(ap, int));
-            else if (*s == 's')
-                count += ft_print_str(va_arg(ap, char *));
-            else if (*s == 'd')
-                count += ft_print_nbr(va_arg(ap, int));
-        }
-        else
-            count += ft_print_chr(*s);
-        s++; 
-    }
+	if(i >= 16)
+	{
+		count = ft_print_hex(i / 16 ,s);
+		if(count < 0)
+			return -1 ;
+	}
+	if( write(1,&(s[i % 16]),1) == -1)
+		return -1;
+	return (count + 1);
+}
+
+int	formate(char *s, va_list ap)
+{
+	int	count;
+
+	count = 0;
+	if (*s == 'c')
+		count += ft_print_char(va_arg(ap, int));
+	else if (*s == 's')
+		count += ft_print_str(va_arg(ap, char *));
+	else if (*s == 'd')
+		count += ft_print_nbr(va_arg(ap, int));
+	else if (*s == 'x')
+		count += ft_print_hex(va_arg(ap, unsigned int), "0123456789abcdef");
+	else if (*s == 'X')
+		count += ft_print_hex(va_arg(ap, unsigned int), "0123456789ABCDEF");
+	else if (*s == '%')
+		count += ft_print_char('%');
+	return (count);
+}
+
+int	ft_prr(char *s, ...)
+{
+	va_list	ap;
+	int		count;
+	int		i;
+
+	i = 0;
+	va_start(ap, s);
+	count = 0;
+	while (s[i])
+	{
+		if (s[i] == '%')
+			count += formate(&(s[++i]), ap);
+		else if (count < 0)
+			return (count);
+		else
+			count += ft_print_char(s[i]);
+		i++;
+	}
 	va_end(ap);
-	return count;
+	return (count);
 }
 
 int	main(void)
 {
-	ft_prr("%s slm %c sajbi zakariae db an7awlo n9ado ft_printf %d\n", NULL , 'A' , -12345);
-	// printf("%s slm %c sajbi zakariae db an7awlo n9ado ft_printf", NULL , 'A');
+	int r1;
+	int r2;
+
+	// close(1);
+	// setvbuf(stdout, NULL, _IONBF, 0);
+
+	r1 = ft_prr("hello %X\n", 42);
+	r2 = printf("hello %X\n", 42);
+	fprintf(stderr, "ft_printf: %d\nprintf:    %d\n", r1, r2);
 	return (0);
-	
 }

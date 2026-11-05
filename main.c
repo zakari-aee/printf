@@ -10,26 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
 #include <unistd.h>
 
-int ft_print_char(int c)
+int	ft_print_char(int c)
 {
-	return(write(1,&c,1));
+	return (write(1, &c, 1));
 }
 
-int ft_sum(int count,...)
+int	ft_sum(int count, ...)
 {
-	va_list arg;
-	int t = 0;
-	va_start(arg,count);
-	while( count  > 0)
+	va_list	arg;
+	int		t;
+
+	t = 0;
+	va_start(arg, count);
+	while (count > 0)
 	{
-		t += va_arg(arg,int);
+		t += va_arg(arg, int);
 		count--;
 	}
 	va_end(arg);
-	return t;
+	return (t);
 }
-
