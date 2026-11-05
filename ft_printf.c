@@ -6,7 +6,7 @@
 /*   By: zallioua <zallioua@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/22 15:49:01 by zallioua          #+#    #+#             */
-/*   Updated: 2026/11/04 15:58:00 by zallioua         ###   ########.fr       */
+/*   Updated: 2026/11/05 11:34:05 by zallioua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 int ft_print_char(int c)
 {
+	if(write(1,&c,1) == -1)
+		return -1;
 	return(write(1,&c,1));
 }
 

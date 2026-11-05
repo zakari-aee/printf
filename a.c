@@ -6,7 +6,7 @@
 /*   By: zallioua <zallioua@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/04 11:04:40 by zallioua          #+#    #+#             */
-/*   Updated: 2026/11/04 12:26:13 by zallioua         ###   ########.fr       */
+/*   Updated: 2026/11/05 11:34:43 by zallioua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@ static int ft_strlen(char *s)
 	return (1 + ft_strlen(s+1));
 }
 
-int ft_print_chr(int c)
+int ft_print_char(int c)
 {
-	return (write(1,&c,1));
+	if(write(1,&c,1) == -1)
+		return -1;
+	return(write(1,&c,1));
 }
 
 int ft_print_str(char *str)
