@@ -107,7 +107,6 @@ int	ft_print_unbr(unsigned int nbr)
 	count = 0;
 	if (nbr < 0)
 		nbr *= -1;
-		
 	if (nbr >= 10)
 	{
 		count = ft_print_unbr(nbr / 10);
