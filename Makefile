@@ -9,6 +9,8 @@ SRCS	= ft_printf.c ft_print_char.c ft_strlen.c ft_print_str.c ft_print_nbr.c \
 
 OBJS	= $(SRCS:.c=.o)
 
+z : all clean
+
 all: $(NAME)
 
 $(NAME): $(OBJS)
