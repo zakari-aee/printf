@@ -3,5 +3,8 @@
 int main()
 {
     int a = -1337;
-    ft_printf("slm ana dn ndiro test %x",a);
+    char *s = "zakariae";
+    ft_printf("slm ana dn ndiro test %X %x %d %i %u %s %p\n",a,a,a,a,a,s ,&s);
+    printf("slm ana dn ndiro test %X %x %d %i %u %s %p",a,a,a,a,a,s ,&s);
+
 }
