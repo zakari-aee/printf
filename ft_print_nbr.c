@@ -6,7 +6,7 @@
 /*   By: zallioua <zallioua@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/05 13:34:56 by zallioua          #+#    #+#             */
-/*   Updated: 2026/11/05 21:23:41 by zallioua         ###   ########.fr       */
+/*   Updated: 2026/11/06 09:07:02 by zallioua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,4 @@ int	ft_print_nbr(int n)
 	if (write(1, &c, 1) == -1)
 		return (-1);
 	return (count + 1);
-}
-
-int	main(void)
-{
-	ft_print_nbr(123);
 }

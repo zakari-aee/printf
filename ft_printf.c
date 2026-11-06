@@ -6,92 +6,55 @@
 /*   By: zallioua <zallioua@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/22 15:49:01 by zallioua          #+#    #+#             */
-/*   Updated: 2026/11/05 11:34:05 by zallioua         ###   ########.fr       */
+/*   Updated: 2026/11/06 09:46:03 by zallioua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <unistd.h>
 
-int	ft_print_char(int c)
+int	formate(const char *s, va_list ap)
 {
-	if (write(1, &c, 1) == -1)
-		return (-1);
-	return (write(1, &c, 1));
-}
-
-int	ft_print_str(char *str)
-{
-	int	count;
-
-	count = 0;
-	while (*str)
-	{
-		ft_print_char((int)*str);
-		str++;
-		count++;
-	}
-	return (count);
-}
-
-int	ft_print_digit(int a, int base)
-{
-	int		count;
-	char	*b;
-
-	count = 0;
-	b = "0123456789abcdef";
-	if (a < 0)
-	{
-		count += write(1, "-", 1);
-		a *= -1;
-	}
-	else if (a < base)
-		count += ft_print_char((int)b[a]);
-	else if (a >= base)
-	{
-		count += ft_print_digit(a / 10, base);
-		return (1 + ft_print_digit(a % 10, base));
-	}
-	return (count);
-}
-
-int	print_format(char sep, va_list ap)
-{
-	int	count;
-
-	count = 0;
-	if (sep == 'c')
-		count += ft_print_char(va_arg(ap, int));
-	else if (sep == 's')
-		count += ft_print_str(va_arg(ap, char *));
-	else if (sep == 'd')
-		count += ft_print_digit(va_arg(ap, int), 10);
-	else if (sep == 'x')
-		count += ft_print_digit(va_arg(ap, int), 16);
-	else
-		write(1, &sep, 1);
+	if (*s == 'c')
+		return (ft_print_char(va_arg(ap, int)));
+	else if (*s == 's')
+		return (ft_print_str(va_arg(ap, char *)));
+	else if (*s == 'd' || *s == 'i')
+		return (ft_print_nbr(va_arg(ap, int)));
+	else if (*s == 'u')
+		return (ft_print_unbr(va_arg(ap, unsigned int)));
+	else if (*s == 'x')
+		return (ft_print_hex(va_arg(ap, unsigned long), "0123456789abcdef"));
+	else if (*s == 'X')
+		return (ft_print_hex(va_arg(ap, unsigned long), "0123456789ABCDEF"));
+	else if (*s == 'p')
+		return (ft_print_point(va_arg(ap, void *)));
+	else if (*s == '%')
+		return (ft_print_char('%'));
+	return (-1);
 }
 
 int	ft_printf(const char *s, ...)
 {
-	va_list	arg;
-	int		c;
-
-	va_start(arg, s);
-	while (*s)
+	int count;
+	count = 0;
+	int i;
+	int ret;
+	i = 0;
+	va_list ap;
+	va_start(ap, s);
+	if (!s)
+		return (-1);
+	while (s[i])
 	{
-		if (*s == '%')
-			c += print_format(*(++s), arg);
+		if (s[i] == '%')
+			ret += formate(&(s[++i]), ap);
 		else
-			c += write(1, s, 1);
-		s++;
+			ret += ft_print_char(s[i]);
+		if (ret == -1)
+			return (-1);
+		count += ret;
+		i++;
 	}
-	va_end(arg);
-	return (c);
-}
-
-int	main(void)
-{
-	ft_printf("%x", 0x00);
+	va_end(ap);
+	return (count);
 }
