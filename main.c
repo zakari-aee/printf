@@ -1,14 +1,55 @@
-#include "ft_printf.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zallioua <zallioua@student.1337.ma>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/11/06 22:47:26 by zallioua          #+#    #+#             */
+/*   Updated: 2026/11/07 11:02:08 by zallioua         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <stdarg.h>
 #include <stdio.h>
+#include "ft_printf.h"
+
+int test(int c,...)
+{
+	int i = 1;
+	va_list ap;
+	printf("Befor the va_start : reg_save_area = %p\n",(ap->reg_save_area));
+	printf("Befor the va_start : overflow_arg_area = %p\n",(ap->overflow_arg_area));
+	printf("Befor the va_start : gp_offset = %d\n",(ap->gp_offset));
+	printf("Befor the va_start : fp_offset = %d\n",(ap->fp_offset));
+
+
+	printf("-----------------------------------------------------------------------------------\n");
+	va_start(ap,c);
+
+	printf("After the va_start : reg_save_area = %p\n",(ap->reg_save_area));
+	printf("After the va_start : overflow_arg_area = %p\n",(ap->overflow_arg_area));
+	printf("After the va_start : gp_offset = %d\n",(ap->gp_offset));
+	printf("After the va_start : fp_offset = %d\n",(ap->fp_offset));;
+	printf("-----------------------------------------------------------------------------------\n");
+
+	while(i <= c)
+	{
+		printf(" %d\n  -------------------------------------------------------------------------------\n",i);
+		va_arg(ap,int);
+		printf("After the va_arg : reg_save_area = %p\n",(ap->reg_save_area));
+		printf("After the va_arg : overflow_arg_area = %p\n",(ap->overflow_arg_area));
+		printf("After the va_arg : gp_offset = %d\n",(ap->gp_offset));
+		printf("After the va_arg : fp_offset = %d\n",(ap->fp_offset));
+		printf(" %d\n  -------------------------------------------------------------------------------\n",i);
+
+		i++;
+		
+	}
+	va_end(ap);
+}
 
 int main()
 {
-    int a = -1337;
-    char *s = "zakariae";
-    int f1;
-    int f2;
-    // f1 = ft_printf("slm ana db ndiro test %X %x %d %i %u %s %p\n",a,a,a,a,a,s ,&s);
-    ft_printf("'% &'%s& % %%'s' \n", "ss");
-       printf("'% &'%s& % %%'s' \n", "ss");
-    
+	test(10,1,2,3,4,5,67,8,9,10);
 }

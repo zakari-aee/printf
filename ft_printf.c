@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: zallioua <zallioua@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/11/06 22:14:41 by zallioua          #+#    #+#             */
-/*   Updated: 2026/11/06 22:16:27 by zallioua         ###   ########.fr       */
+/*   Created: 2026/10/22 15:49:01 by zallioua          #+#    #+#             */
+/*   Updated: 2026/11/06 22:40:33 by zallioua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int	formate(char c, va_list *ap)
+int	formate(const char c, va_list *ap)
 {
 	if (c == 'c')
 		return (ft_print_char(va_arg(*ap, int)));
@@ -33,34 +33,6 @@ static int	formate(char c, va_list *ap)
 	return (0);
 }
 
-static int	is_spec(char c)
-{
-	int	i;
-
-	i = 0;
-	while ("cspdiuxX%"[i])
-	{
-		if ("cspdiuxX%"[i++] == c)
-			return (1);
-	}
-	return (0);
-}
-
-static int	parse(const char *s, int *i, va_list *ap)
-{
-	int	start;
-
-	start = *i;
-	while (s[*i + 1] == ' ')
-		(*i)++;
-	if (!s[*i + 1])
-		return (-1);
-	(*i)++;
-	if (!is_spec(s[*i]))
-		return (write(1, s + start, *i - start + 1));
-	return (formate(s[*i], ap));
-}
-
 int	ft_printf(const char *s, ...)
 {
 	va_list	ap;
@@ -71,20 +43,19 @@ int	ft_printf(const char *s, ...)
 	if (!s)
 		return (-1);
 	va_start(ap, s);
-	ret = 0;
 	count = 0;
-	i = -1;
-	while (s[++i] && ret != -1)
+	i = 0;
+	while (s[i])
 	{
 		if (s[i] == '%')
-			ret = parse(s, &i, &ap);
+			ret = formate(s[++i], &ap);
 		else
 			ret = ft_print_char(s[i]);
-		if (ret != -1)
-			count += ret;
+		if (ret == -1)
+			return (va_end(ap), -1);
+		count += ret;
+		i++;
 	}
 	va_end(ap);
-	if (ret == -1)
-		return (-1);
 	return (count);
 }
