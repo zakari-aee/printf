@@ -6,7 +6,7 @@
 /*   By: zallioua <zallioua@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/22 15:49:01 by zallioua          #+#    #+#             */
-/*   Updated: 2026/11/06 22:40:33 by zallioua         ###   ########.fr       */
+/*   Updated: 2026/11/07 13:58:53 by zallioua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,5 @@ int	ft_printf(const char *s, ...)
 		count += ret;
 		i++;
 	}
-	va_end(ap);
-	return (count);
+	return (va_end(ap),count);
 }

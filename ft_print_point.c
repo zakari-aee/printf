@@ -6,7 +6,7 @@
 /*   By: zallioua <zallioua@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/06 09:18:07 by zallioua          #+#    #+#             */
-/*   Updated: 2026/11/06 09:57:38 by zallioua         ###   ########.fr       */
+/*   Updated: 2026/11/07 14:01:18 by zallioua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	ft_print_point(void *ptr)
 {
 	int	ret;
 
-	if (!ptr)
+	if (ptr == NULL)
 	{
 		if (write(1, "(nil)", 5) == -1)
 			return (-1);
